@@ -37,7 +37,8 @@ def make_sample_arr(size: int, start: int = 0, end: int = 100):
 if __name__ == '__main__':
     # Make random array
     sample_list = make_sample_arr(100)
-    print(f"정렬 전: {sample_list}")
+
+    print(f"정렬 전: {sample_list}\n")
 
     # Normal case
     start_normal_case = time.time()
@@ -45,10 +46,3 @@ if __name__ == '__main__':
 
     print(f"정렬 후 : {sorted_list}")
     print(f"Normal case L/T : {time.time()-start_normal_case}")
-
-    # Worst case
-    start_worst_case = time.time()
-    worst_list = quick_sort(sorted_list)
-
-    print(f"최악의 경우 : {worst_list}")
-    print(f"Worst case L/T : {time.time()-start_worst_case}")
