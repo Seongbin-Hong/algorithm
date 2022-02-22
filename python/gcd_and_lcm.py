@@ -1,11 +1,4 @@
-from cgitb import small
-from os import scandir
-
-#
-
 # Greatest Common Divisor
-
-
 def gcd(larger: int, smaller: int) -> int:
     if not isinstance(larger, int) | isinstance(smaller, int):
         print("a or b argument is not integer.")
