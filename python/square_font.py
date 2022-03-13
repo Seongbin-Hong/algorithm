@@ -20,52 +20,75 @@
 # 9. Test case 입력 값 만큼 반복
 
 T = int(input())
-# 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
-for test_case in range(1, T + 1):
-    H, W, N = map(int, input().split())
-    words = [_ for _ in map(str, input().split())]
-    w_len = [len(_) for _ in words]
-    w_max = H
-    if w_max > W:
-        w_max = W
 
+for tc in range(1, T + 1):
+    H, W, N = map(int, input().split(" "))
+    words = [word for word in map(str, input().split(" "))]
+    words_len = [len(word) for word in words]
+
+    # 정사각형 글꼴이기 때문에 높이를 신경써야 함
+    max_digit = int()
+
+    if H > W:
+        max_digit = W
+    else:
+        max_digit = H  # H < W
+
+    SPACE = 1
     max_font_size = 0
-    for font_size in range(1, w_max+1):
-        line_num = 1
-        i_word = 0
-        possible = False
-        while line_num * font_size <= H:
-            line_first = True
-            current_len = 0
-            while True:
-                if line_first:
-                    if font_size * (current_len + w_len[i_word]) <= W:
-                        current_len += w_len[i_word]
-                        i_word += 1
-                        line_first = False
-                        if i_word == len(w_len):
-                            possible = True
-                            break
-                    else:
-                        line_num += 1
-                        break
-                else:
-                    if font_size * (current_len + w_len[i_word] + 1) <= W:
-                        current_len += w_len[i_word] + 1
-                        i_word += 1
-                        if i_word == len(w_len):
-                            possible = True
-                            break
-                    else:
-                        line_num += 1
-                        break
-            if i_word == len(w_len):
-                possible = True
-                break
 
-        if not possible:
+    for font_size in range(1, max_digit + 1):
+        row_num = 1
+        word_index = 0
+        print_possible = False
+
+        # W는 지속적으로 검증하기 때문에 H로 조건 생성
+        while row_num * font_size <= H:
+            first_time = True
+            current_word_len = 0
+
+            while True:
+                first_current_square_size = font_size * \
+                    (current_word_len + words_len[word_index])
+                current_square_size = font_size * \
+                    (current_word_len + SPACE + words_len[word_index])
+
+                if first_time:
+                    # W를 초과하지 않으면, 단어를 하나씩 추가함
+                    if first_current_square_size <= W:
+                        current_word_len += words_len[word_index]
+                        word_index += 1
+                        first_time = False
+                        # index가 words_len을 초과하지 않게 조절함
+                        if word_index == len(words_len):
+                            print_possible = True
+                            break
+                    # W를 초과했으므로 다음 라인으로 넘어감
+                    else:
+                        row_num += 1
+                        break
+
+                else:
+                    # 단어 + 단어가 되는 상황이므로 Space를 추가함
+                    if current_square_size <= W:
+                        current_word_len += SPACE + words_len[word_index]
+                        word_index += 1
+                        # index가 words_len을 초과하지 않게 조절함
+                        if word_index == len(words_len):
+                            print_possible = True
+                            break
+                    # W를 초과했으므로 다음 라인으로 넘어감
+                    else:
+                        row_num += 1
+                        break
+            # 처음부터 index가 words_len이 같은 경우를 위한 분기
+            if word_index == len(words_len):
+                print_possible = True
+                break
+        # 출력이 불가한 상태로, font size 0 출력
+        if not print_possible:
             break
         else:
             max_font_size = font_size
 
-    print("#%d" % test_case, int(max_font_size))
+    print(f"#{tc} {max_font_size}")
