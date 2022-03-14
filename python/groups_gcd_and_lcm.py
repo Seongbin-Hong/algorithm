@@ -48,9 +48,6 @@ for index in range(T):
 
     numbers = [int(x) for x in V.split(" ")]
 
-    if len(numbers) > U:
-        exit()
-
     numbers_gcd = gcd_number_groups(numbers)
     numbers_lcm = lcm_numbers_groups(numbers)
     common_divisors = common_divisor(numbers_gcd)
